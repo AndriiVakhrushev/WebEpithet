@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static "css/custom.css" %}">
+  <title>генератор эпитетов</title>
+</head>
+<body>
+<div class="container">
+    <div class="vertical-center-row">
+        <div align="center">
+  <form id="epithet_form">
+    <div class="input-group input-group-sm">
+      <input type="text" id="id_name" class="form-control"
+             placeholder="Введите имя" name="name">
+      <span class="input-group-btn">
+        <button class="btn btn-success" type="submit">Подбодри себя
+        </button>
+      </span>
+    </div>
+  </form>
+</div>
+</div>
+</div>
+</body>
+<!-- jQuery 2.1.4 -->
+<script src="{% static "js/jQuery/jQuery-2.1.4.min.js" %}"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/bootbox.min.js" %}"></script>
+<script>
+  $(document).ready(function () {
+    $('#epithet_form').submit(function (e) {
+      e.preventDefault();
+      var name = $('#id_name').val();
+      if (name == '') {
+        bootbox.alert('Пожалуйста. введите имя');
+      }
+      else {
+        $.ajax({
+          url: '{% url 'get_epithet' %}',
+          method: 'GET',
+          success: function (result) {
+            console.log(result);
+            $('#id_name').val('');
+            bootbox.alert('Рад тебя видеть снова, ' + result['epithet'] + ' ' + name)
+          }
+        });
+      }
+    });
+  });
+</script>
+</html>
